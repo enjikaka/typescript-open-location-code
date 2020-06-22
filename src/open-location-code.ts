@@ -20,7 +20,7 @@ export class CodeArea {
    */
   public longitudeCenter: number;
 
-  constructor(public latitudeLo, public longitudeLo, public latitudeHi, public longitudeHi, public codeLength) {
+  constructor(public latitudeLo: number, public longitudeLo: number, public latitudeHi: number, public longitudeHi: number, public codeLength: number) {
     this.latitudeCenter = Math.min(latitudeLo + (latitudeHi - latitudeLo) / 2, LATITUDE_MAX);
     this.longitudeCenter = Math.min(longitudeLo + (longitudeHi - longitudeLo) / 2, LONGITUDE_MAX);
   }
@@ -167,10 +167,13 @@ export default class OpenLocationCode {
       }
       // There can only be one group and it must have even length.
       const padMatch = code.match(new RegExp("(" + OpenLocationCode.PADDING_CHARACTER_ + "+)", "g"));
-      if (padMatch.length > 1 || padMatch[0].length % 2 === 1 ||
-        padMatch[0].length > OpenLocationCode.SEPARATOR_POSITION_ - 2) {
-        return false;
+      if (padMatch) {
+        if (padMatch.length > 1 || padMatch[0].length % 2 === 1 ||
+          padMatch[0].length > OpenLocationCode.SEPARATOR_POSITION_ - 2) {
+          return false;
+        }
       }
+
       // If the code is long enough to end with a separator, make sure it does.
       if (code.charAt(code.length - 1) !== OpenLocationCode.SEPARATOR_) {
         return false;
